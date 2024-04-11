@@ -26,11 +26,13 @@
             std::vector<std::thread> threads;
             std::mutex mutex;
 
-            for (int i = 0; i < 1000000; ++i) {
+            for (int i = 0; i < MAX_THREAD; ++i) {
                 //sýnýfýn üye deðiþkenlerini almak için, [] lamba içerisinde kullanýlacak deðiþkenleri ver
                 threads.emplace_back([this, &mutex, &a]() {
-                    std::lock_guard<std::mutex> lock(mutex);
-                    a++;
+                    for (int j = 0; j < 100000; j++) { //MUTEX KULLANMADAN BURASI RACE CONDITION
+                        //std::lock_guard<std::mutex> lock(mutex);
+                        a++;
+                    }
                     });
             }
 
